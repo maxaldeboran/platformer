@@ -1,0 +1,19 @@
+# Ignore VIM's backup generated files
+*.swp
+*.swo
+*~
+
+# Ignore thumbnails created by windows
+Thumbs.db
+
+# Ignore compiled binaries
+*.o
+*.exe
+*.a
+*.bc
+*.so
+*.so.*
+*.dll
+*.h.pch
+./*.obj
+plat
