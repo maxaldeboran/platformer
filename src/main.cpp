@@ -6,17 +6,9 @@
 
 class Solid {
 public:
-	IVector2 GetPosition(void) {
-		return position;
-	}
-
-	int GetX(void) {
-		return position.x;
-	}
-
-	int GetY(void) {
-		return position.y;
-	}
+	IVector2 GetPosition(void);
+	int GetX(void);
+	int GetY(void);
 
 private:
 	IVector2 position;
@@ -25,43 +17,11 @@ private:
 
 class Actor {
 public:
-	IVector2 GetPosition(void) {
-		return position;
-	}
-
-	int GetX(void) {
-		return position.x;
-	}
-
-	int GetY(void) {
-		return position.y;
-	}
-
-	bool MoveX(float amount) {
-		xRemainder += amount;
-		int move = roundf(xRemainder);
-
-		if (move != 0) {
-			xRemainder -= move;
-			/* TODO: proper movement/collision code */
-			position.x += move;
-		}
-
-		return false;
-	}
-
-	bool MoveY(float amount) {
-		yRemainder += amount;
-		int move = roundf(yRemainder);
-
-		if (move != 0) {
-			yRemainder -= move;
-			/* TODO: proper movement/collision code */
-			position.y += move;
-		}
-
-		return false;
-	}
+	IVector2 GetPosition(void);
+	int GetX(void);
+	int GetY(void);
+	bool MoveX(float amount);
+	bool MoveY(float amount);
 
 private:
 	IVector2 position;
@@ -75,7 +35,66 @@ public:
 
 Game gGame;
 
-int main(void) {
+IVector2 Solid::GetPosition(void)
+{
+	return position;
+}
+
+int Solid::GetX(void)
+{
+	return position.x;
+}
+
+int Solid::GetY(void)
+{
+	return position.y;
+}
+
+IVector2 Actor::GetPosition(void)
+{
+	return position;
+}
+
+int Actor::GetX(void)
+{
+	return position.x;
+}
+
+int Actor::GetY(void)
+{
+	return position.y;
+}
+
+bool Actor::MoveX(float amount)
+{
+	xRemainder += amount;
+	int move = roundf(xRemainder);
+
+	if (move != 0) {
+		xRemainder -= move;
+		/* TODO: proper movement/collision code */
+		position.x += move;
+	}
+
+	return false;
+}
+
+bool Actor::MoveY(float amount)
+{
+	yRemainder += amount;
+	int move = roundf(yRemainder);
+
+	if (move != 0) {
+		yRemainder -= move;
+		/* TODO: proper movement/collision code */
+		position.y += move;
+	}
+
+	return false;
+}
+
+int main(void)
+{
 	InitWindow(512, 288, "Hello World");
 	if (!IsWindowReady()) {
 		TraceLog(LOG_FATAL, "Failed to initialize the window");
