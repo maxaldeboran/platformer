@@ -2,18 +2,7 @@
 
 #include <raylib.h>
 
-constexpr int Sign(int x) {
-	return (x > 0) - (x < 0);
-}
-
-constexpr int Sign(float x) {
-	float eps = 0.0f;
-	return (x >= eps) - (x <= -eps);
-}
-
-struct IVector2 {
-	int x, y;
-};
+#include "util.h"
 
 class Solid {
 public:
@@ -105,8 +94,8 @@ int main(void) {
 		DrawText("Hello World", 10, 10, 20, BLACK);
 
 		Rectangle rec = {
-			.x = (float)gGame.player.GetX(),
-			.y = (float)gGame.player.GetY(),
+			.x = static_cast<float>(gGame.player.GetX()),
+			.y = static_cast<float>(gGame.player.GetY()),
 			.width = 32.0f,
 			.height = 32.0f,
 		};
