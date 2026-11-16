@@ -1,4 +1,5 @@
-#include <math.h>
+#include <cmath>
+#include <vector>
 
 #include <raylib.h>
 
@@ -6,63 +7,56 @@
 
 class Solid {
 public:
-	IVector2 GetPosition(void);
-	int GetX(void);
-	int GetY(void);
-
-private:
 	IVector2 position;
+	Aabb hitbox;
+	constexpr Aabb GetHitboxTranslated(void);
+private:
 	float xRemainder, yRemainder;
 };
+
+constexpr Aabb Solid::GetHitboxTranslated(void)
+{
+	return hitbox.Translated(position);
+}
 
 class Actor {
 public:
-	IVector2 GetPosition(void);
-	int GetX(void);
-	int GetY(void);
+	IVector2 position;
+	Aabb hitbox;
 	bool MoveX(float amount);
 	bool MoveY(float amount);
-
+	constexpr Aabb GetHitboxTranslated(void);
 private:
-	IVector2 position;
 	float xRemainder, yRemainder;
+	bool CollideAt(const std::vector<Solid> &solids, IVector2 position);
 };
+
+constexpr Aabb Actor::GetHitboxTranslated(void)
+{
+	return hitbox.Translated(position);
+}
 
 class Game {
 public:
+	std::vector<Solid> solids;
 	Actor player;
 };
 
 Game gGame;
 
-IVector2 Solid::GetPosition(void)
+bool Actor::CollideAt(const std::vector<Solid> &solids, IVector2 position)
 {
-	return position;
-}
+	Aabb box = hitbox.Translated(position);
 
-int Solid::GetX(void)
-{
-	return position.x;
-}
+	for (auto solid : solids) {
+		Aabb other = solid.hitbox.Translated(solid.position);
 
-int Solid::GetY(void)
-{
-	return position.y;
-}
+		if (AabbsCollide(box, other)) {
+			return true;
+		}
+	}
 
-IVector2 Actor::GetPosition(void)
-{
-	return position;
-}
-
-int Actor::GetX(void)
-{
-	return position.x;
-}
-
-int Actor::GetY(void)
-{
-	return position.y;
+	return false;
 }
 
 bool Actor::MoveX(float amount)
@@ -71,9 +65,16 @@ bool Actor::MoveX(float amount)
 	int move = roundf(xRemainder);
 
 	if (move != 0) {
+		int sign = Sign(move);
 		xRemainder -= move;
-		/* TODO: proper movement/collision code */
-		position.x += move;
+		while (move != 0) {
+			if (!CollideAt(gGame.solids, position + IVector2{sign, 0})) {
+				move -= sign;
+				position.x += sign;
+			} else {
+				return true;
+			}
+		}
 	}
 
 	return false;
@@ -85,9 +86,16 @@ bool Actor::MoveY(float amount)
 	int move = roundf(yRemainder);
 
 	if (move != 0) {
+		int sign = Sign(move);
 		yRemainder -= move;
-		/* TODO: proper movement/collision code */
-		position.y += move;
+		while (move != 0) {
+			if (!CollideAt(gGame.solids, position + IVector2{0, sign})) {
+				move -= sign;
+				position.y += sign;
+			} else {
+				return true;
+			}
+		}
 	}
 
 	return false;
@@ -102,6 +110,13 @@ int main(void)
 
 	SetTargetFPS(60);
 
+	gGame.player.hitbox.hi = IVector2{23, 23};
+
+	Solid solid{};
+	solid.position = IVector2{100, 100};
+	solid.hitbox.hi = IVector2{15, 15};
+	gGame.solids.push_back(solid);
+
 	while (!WindowShouldClose()) {
 		int dirX = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
 		int dirY = IsKeyDown(KEY_S) - IsKeyDown(KEY_W);
@@ -112,13 +127,12 @@ int main(void)
 		ClearBackground(WHITE);
 		DrawText("Hello World", 10, 10, 20, BLACK);
 
-		Rectangle rec = {
-			.x = static_cast<float>(gGame.player.GetX()),
-			.y = static_cast<float>(gGame.player.GetY()),
-			.width = 32.0f,
-			.height = 32.0f,
-		};
-		DrawRectangleRec(rec, RED);
+		Rectangle rec = gGame.player.GetHitboxTranslated().AsRec();
+		DrawRectangleLinesEx(rec, 1.0f, RED);
+		for (auto solid : gGame.solids) {
+			rec = solid.GetHitboxTranslated().AsRec();
+			DrawRectangleLinesEx(rec, 1.0f, BLUE);
+		}
 		EndDrawing();
 	}
 
