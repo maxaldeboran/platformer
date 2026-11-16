@@ -8,9 +8,9 @@ LIBS=-lm -lX11
 plat: obj/main.o $(RAYLIB_SRC)/libraylib.a
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
 
-obj/%.o: %.cpp
+obj/%.o: %.cpp *.h
 	@mkdir -p obj
-	$(CXX) $(CXXFLAGS) -c -o $@ $^
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(RAYLIB_SRC)/libraylib.a: $(RAYLIB_SRC)/*.c $(RAYLIB_SRC)/*.h
 	$(MAKE) -C $(RAYLIB_SRC) TARGET_PLATFORM=PLATFORM_DESKTOP_GLFW
