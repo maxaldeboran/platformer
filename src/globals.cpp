@@ -1,3 +1,9 @@
 #include "globals.h"
 
-Game g_game;
+namespace Plat {
+
+std::vector<Solid> solids;
+std::vector<Actor> actors;
+Actor *player;
+
+} // namespace Plat

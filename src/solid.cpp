@@ -4,6 +4,8 @@
 
 #include "globals.h"
 
+namespace Plat {
+
 void Solid::Move(float amountX, float amountY)
 {
 	xRemainder += amountX;
@@ -15,7 +17,7 @@ void Solid::Move(float amountX, float amountY)
 		return;
 	}
 
-	for (auto &actor : g_game.actors) {
+	for (auto &actor : actors) {
 		actor.isRidingCurrent = actor.IsRiding(*this);
 	}
 
@@ -25,7 +27,7 @@ void Solid::Move(float amountX, float amountY)
 	position.x += moveX;
 
 	if (moveX > 0) {
-		for (auto &actor : g_game.actors) {
+		for (auto &actor : actors) {
 			if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
 				bool hit = actor.MoveX(hiX() - actor.loX() + 1);
 				if (hit) actor.Squish();
@@ -34,7 +36,7 @@ void Solid::Move(float amountX, float amountY)
 			}
 		}
 	} else if (moveX < 0) {
-		for (auto &actor : g_game.actors) {
+		for (auto &actor : actors) {
 			if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
 				bool hit = actor.MoveX(loX() - actor.hiX() - 1);
 				if (hit) actor.Squish();
@@ -48,7 +50,7 @@ void Solid::Move(float amountX, float amountY)
 	position.y += moveY;
 
 	if (moveY > 0) {
-		for (auto &actor : g_game.actors) {
+		for (auto &actor : actors) {
 			if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
 				bool hit = actor.MoveY(hiY() - actor.loY() + 1);
 				if (hit) actor.Squish();
@@ -57,7 +59,7 @@ void Solid::Move(float amountX, float amountY)
 			}
 		}
 	} else if (moveY < 0) {
-		for (auto &actor : g_game.actors) {
+		for (auto &actor : actors) {
 			if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
 				bool hit = actor.MoveY(loY() - actor.hiY() - 1);
 				if (hit) actor.Squish();
@@ -69,3 +71,5 @@ void Solid::Move(float amountX, float amountY)
 
 	isCollidable = true;
 }
+
+} // namespace Plat

@@ -6,6 +6,8 @@
 #include "solid.h"
 #include "util.h"
 
+namespace Plat {
+
 class Actor {
 public:
 	IVector2 position;
@@ -51,5 +53,7 @@ constexpr int Actor::hiY(void)
 {
 	return GetHitboxTranslated().hi.y;
 }
+
+} // namespace Plat
 
 #endif // PLAT_ACTOR_H_

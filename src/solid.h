@@ -3,6 +3,8 @@
 
 #include "util.h"
 
+namespace Plat {
+
 class Solid {
 public:
 	IVector2 position;
@@ -44,5 +46,7 @@ constexpr int Solid::hiY(void)
 {
 	return GetHitboxTranslated().hi.y;
 }
+
+} // namespace Plat
 
 #endif // PLAT_SOLID_H_

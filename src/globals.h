@@ -5,13 +5,12 @@
 
 #include "actor.h"
 
-class Game {
-public:
-	std::vector<Solid> solids;
-	std::vector<Actor> actors;
-	Actor *player;
-};
+namespace Plat {
 
-extern Game g_game;
+extern std::vector<Solid> solids;
+extern std::vector<Actor> actors;
+extern Actor *player;
+
+}
 
 #endif // PLAT_GLOBALS_H_
