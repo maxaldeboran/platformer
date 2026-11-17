@@ -4,6 +4,8 @@
 
 #include "globals.h"
 
+namespace Plat {
+
 /* default virtual method impl */
 bool Actor::IsRiding(const Solid &solid)
 {
@@ -40,7 +42,7 @@ bool Actor::MoveX(float amount)
 	int sign = Sign(move);
 	xRemainder -= move;
 	while (move != 0) {
-		if (!CollideAt(g_game.solids, position + IVector2{sign, 0})) {
+		if (!CollideAt(solids, position + IVector2{sign, 0})) {
 			move -= sign;
 			position.x += sign;
 		} else {
@@ -59,7 +61,7 @@ bool Actor::MoveY(float amount)
 	int sign = Sign(move);
 	yRemainder -= move;
 	while (move != 0) {
-		if (!CollideAt(g_game.solids, position + IVector2{0, sign})) {
+		if (!CollideAt(solids, position + IVector2{0, sign})) {
 			move -= sign;
 			position.y += sign;
 		} else {
@@ -69,3 +71,5 @@ bool Actor::MoveY(float amount)
 
 	return false;
 }
+
+} // namespace Plat
