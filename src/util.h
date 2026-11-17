@@ -44,7 +44,7 @@ constexpr Rectangle Aabb::AsRec(void)
 	return result;
 }
 
-constexpr bool AabbsCollide(Aabb a, Aabb b)
+constexpr bool AabbsOverlap(Aabb a, Aabb b)
 {
 	return a.lo.x <= b.hi.x &&
 		a.hi.x >= b.lo.x &&
