@@ -2,10 +2,11 @@ CXX=g++
 RAYLIB_SRC=raylib/src
 CXXFLAGS=-std=c++23 -ggdb -Wall -Wextra -pedantic-errors -I$(RAYLIB_SRC)
 LIBS=-lm -lX11
+OBJS=obj/globals.o obj/actor.o obj/solid.o obj/main.o
 
 .PHONY: clean cleanraylib cleanall
 
-plat: obj/main.o $(RAYLIB_SRC)/libraylib.a
+plat: $(OBJS) $(RAYLIB_SRC)/libraylib.a
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
 
 obj/%.o: %.cpp *.h
