@@ -22,8 +22,7 @@ void Solid::Move(float amountX, float amountY)
 	isCollidable = false;
 
 	xRemainder -= moveX;
-	yRemainder -= moveY;
-	position += IVector2{moveX, moveY};
+	position.x += moveX;
 
 	if (moveX > 0) {
 		for (auto &actor : g_game.actors) {
@@ -45,6 +44,8 @@ void Solid::Move(float amountX, float amountY)
 		}
 	}
 
+	yRemainder -= moveY;
+	position.y += moveY;
 
 	if (moveY > 0) {
 		for (auto &actor : g_game.actors) {
