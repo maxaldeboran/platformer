@@ -51,15 +51,15 @@ class Actor {
 public:
 	IVector2 position;
 	Aabb hitbox;
-	bool isRidingCurrent = 0; /* used for Solid.Move() */
+	bool isRidingCurrent = 0; /* flag used in Solid.Move() */
 
 	constexpr int loX(void);
 	constexpr int loY(void);
 	constexpr int hiX(void);
 	constexpr int hiY(void);
 
-	bool MoveX(float amount); /* returns true if the movement hit a solid */
-	bool MoveY(float amount); /* returns true if the movement hit a solid */
+	bool MoveX(float amount); /* returns true if a solid was hit */
+	bool MoveY(float amount); /* returns true if a solid was hit */
 	bool CollideAt(const std::vector<Solid> &solids, IVector2 position);
 	constexpr Aabb GetHitboxTranslated(void);
 	virtual bool IsRiding(const Solid &solid);
@@ -117,54 +117,48 @@ void Solid::Move(float amountX, float amountY)
 
 	isCollidable = false;
 
-	if (moveX != 0) {
-		xRemainder -= moveX;
-		position.x += moveX;
+	xRemainder -= moveX;
+	yRemainder -= moveY;
+	position += IVector2{moveX, moveY};
 
-		if (moveX > 0) {
-			for (auto &actor : g_game.actors) {
-				if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
-					bool hit = actor.MoveX(hiX() - actor.loX() + 1);
-					if (hit) actor.Squish();
-				} else if (actor.isRidingCurrent) {
-					bool hit = actor.MoveX(moveX);
-					if (hit) actor.Squish();
-				}
+	if (moveX > 0) {
+		for (auto &actor : g_game.actors) {
+			if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
+				bool hit = actor.MoveX(hiX() - actor.loX() + 1);
+				if (hit) actor.Squish();
+			} else if (actor.isRidingCurrent) {
+				bool hit = actor.MoveX(moveX);
+				if (hit) actor.Squish();
 			}
-		} else {
-			for (auto &actor : g_game.actors) {
-				if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
-					bool hit = actor.MoveX(loX() - actor.hiX() - 1);
-					if (hit) actor.Squish();
-				} else if (actor.isRidingCurrent) {
-					bool hit = actor.MoveX(moveX);
-					if (hit) actor.Squish();
-				}
+		}
+	} else if (moveX < 0){
+		for (auto &actor : g_game.actors) {
+			if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
+				bool hit = actor.MoveX(loX() - actor.hiX() - 1);
+				if (hit) actor.Squish();
+			} else if (actor.isRidingCurrent) {
+				bool hit = actor.MoveX(moveX);
+				if (hit) actor.Squish();
 			}
 		}
 	}
 
-	if (moveY != 0) {
-		yRemainder -= moveY;
-		position.y += moveY;
-
-		if (moveY > 0) {
-			for (auto &actor : g_game.actors) {
-				if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
-					bool hit = actor.MoveY(hiY() - actor.loY() + 1);
-					if (hit) actor.Squish();
-				} else if (actor.isRidingCurrent) {
-					actor.MoveY(moveY);
-				}
+	if (moveY > 0) {
+		for (auto &actor : g_game.actors) {
+			if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
+				bool hit = actor.MoveY(hiY() - actor.loY() + 1);
+				if (hit) actor.Squish();
+			} else if (actor.isRidingCurrent) {
+				actor.MoveY(moveY);
 			}
-		} else {
-			for (auto &actor : g_game.actors) {
-				if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
-					bool hit = actor.MoveY(loY() - actor.hiY() - 1);
-					if (hit) actor.Squish();
-				} else if (actor.isRidingCurrent) {
-					actor.MoveY(moveY);
-				}
+		}
+	} else if (moveY < 0) {
+		for (auto &actor : g_game.actors) {
+			if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
+				bool hit = actor.MoveY(loY() - actor.hiY() - 1);
+				if (hit) actor.Squish();
+			} else if (actor.isRidingCurrent) {
+				actor.MoveY(moveY);
 			}
 		}
 	}
@@ -203,10 +197,6 @@ bool Actor::MoveX(float amount)
 	xRemainder += amount;
 	int move = roundf(xRemainder);
 
-	if (move == 0) {
-		return false;
-	}
-
 	int sign = Sign(move);
 	xRemainder -= move;
 	while (move != 0) {
@@ -225,10 +215,6 @@ bool Actor::MoveY(float amount)
 {
 	yRemainder += amount;
 	int move = roundf(yRemainder);
-
-	if (move == 0) {
-		return false;
-	}
 
 	int sign = Sign(move);
 	yRemainder -= move;
