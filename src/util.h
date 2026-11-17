@@ -23,6 +23,12 @@ constexpr IVector2 operator+(const IVector2 &lhs, const IVector2 &rhs)
 	return IVector2{lhs.x + rhs.x, lhs.y + rhs.y};
 }
 
+constexpr void operator+=(IVector2 &lhs, const IVector2 &rhs)
+{
+	lhs.x += rhs.x;
+	lhs.y += rhs.y;
+}
+
 struct Aabb {
 	IVector2 lo, hi;
 	constexpr Aabb Translated(const IVector2 &origin);
