@@ -111,7 +111,7 @@ void Solid::Move(float amountX, float amountY)
 		return;
 	}
 
-	for (auto actor : g_game.actors) {
+	for (auto &actor : g_game.actors) {
 		actor.isRidingCurrent = actor.IsRiding(*this);
 	}
 
@@ -127,18 +127,16 @@ void Solid::Move(float amountX, float amountY)
 				bool hit = actor.MoveX(hiX() - actor.loX() + 1);
 				if (hit) actor.Squish();
 			} else if (actor.isRidingCurrent) {
-				bool hit = actor.MoveX(moveX);
-				if (hit) actor.Squish();
+				actor.MoveX(moveX);
 			}
 		}
-	} else if (moveX < 0){
+	} else if (moveX < 0) {
 		for (auto &actor : g_game.actors) {
 			if (AabbsOverlap(GetHitboxTranslated(), actor.GetHitboxTranslated())) {
 				bool hit = actor.MoveX(loX() - actor.hiX() - 1);
 				if (hit) actor.Squish();
 			} else if (actor.isRidingCurrent) {
-				bool hit = actor.MoveX(moveX);
-				if (hit) actor.Squish();
+				actor.MoveX(moveX);
 			}
 		}
 	}
