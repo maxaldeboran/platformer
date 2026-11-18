@@ -7,8 +7,8 @@ namespace Plat {
 
 class Solid {
 public:
-	IVector2 position;
-	Aabb hitbox;
+	IVector2 position{};
+	Aabb hitbox{};
 	bool isCollidable = 1;
 
 	constexpr int loX(void);
@@ -19,7 +19,7 @@ public:
 	constexpr Aabb GetHitboxTranslated(void);
 	void Move(float x, float y);
 private:
-	float xRemainder, yRemainder;
+	float xRemainder = 0.0f, yRemainder = 0.0f;
 };
 
 constexpr Aabb Solid::GetHitboxTranslated(void)

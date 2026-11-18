@@ -7,6 +7,13 @@
 namespace Plat {
 
 /* default virtual method impl */
+
+void Actor::Update(void)
+{
+	/* do nothing */
+}
+
+/* default virtual method impl */
 bool Actor::IsRiding(const Solid &solid)
 {
 	(void)solid;
@@ -19,14 +26,14 @@ void Actor::Squish(void)
 	TraceLog(LOG_INFO, "Squish!");
 }
 
-bool Actor::CollideAt(const std::vector<Solid> &solids, IVector2 position)
+bool Actor::CollideAt(const std::vector<std::shared_ptr<Solid>> &solids, IVector2 position)
 {
 	Aabb box = hitbox.Translated(position);
 
-	for (auto solid : solids) {
-		Aabb other = solid.GetHitboxTranslated();
+	for (auto &solid : solids) {
+		Aabb other = solid->GetHitboxTranslated();
 
-		if (solid.isCollidable && AabbsOverlap(box, other)) {
+		if (solid->isCollidable && AabbsOverlap(box, other)) {
 			return true;
 		}
 	}
@@ -42,7 +49,7 @@ bool Actor::MoveX(float amount)
 	int sign = Sign(move);
 	xRemainder -= move;
 	while (move != 0) {
-		if (!CollideAt(solids, position + IVector2{sign, 0})) {
+		if (!CollideAt(gGame->solids, position + IVector2{sign, 0})) {
 			move -= sign;
 			position.x += sign;
 		} else {
@@ -61,7 +68,7 @@ bool Actor::MoveY(float amount)
 	int sign = Sign(move);
 	yRemainder -= move;
 	while (move != 0) {
-		if (!CollideAt(solids, position + IVector2{0, sign})) {
+		if (!CollideAt(gGame->solids, position + IVector2{0, sign})) {
 			move -= sign;
 			position.y += sign;
 		} else {

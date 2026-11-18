@@ -1,6 +1,7 @@
 #ifndef PLAT_ACTOR_H_
 #define PLAT_ACTOR_H_
 
+#include <memory>
 #include <vector>
 
 #include "solid.h"
@@ -10,23 +11,24 @@ namespace Plat {
 
 class Actor {
 public:
-	IVector2 position;
-	Aabb hitbox;
-	bool isRidingCurrent = 0; /* flag used in Solid.Move() */
+	IVector2 position{};
+	Aabb hitbox{};
+	bool isRidingCurrent = false; /* flag used in Solid.Move() */
 
 	constexpr int loX(void);
 	constexpr int loY(void);
 	constexpr int hiX(void);
 	constexpr int hiY(void);
 
+	virtual void Update(void);
 	bool MoveX(float amount); /* returns true if a solid was hit */
 	bool MoveY(float amount); /* returns true if a solid was hit */
-	bool CollideAt(const std::vector<Solid> &solids, IVector2 position);
+	bool CollideAt(const std::vector<std::shared_ptr<Solid>> &solids, IVector2 position);
 	constexpr Aabb GetHitboxTranslated(void);
 	virtual bool IsRiding(const Solid &solid);
 	virtual void Squish(void);
 private:
-	float xRemainder, yRemainder;
+	float xRemainder = 0.0f, yRemainder = 0.0f;
 };
 
 constexpr Aabb Actor::GetHitboxTranslated(void)

@@ -1,16 +1,22 @@
 #ifndef PLAT_GLOBALS_H_
 #define PLAT_GLOBALS_H_
 
+#include <memory>
 #include <vector>
 
-#include "actor.h"
+#include "solid.h"
+#include "level.h"
 
 namespace Plat {
 
-extern std::vector<Solid> solids;
-extern std::vector<Actor> actors;
-extern Actor *player;
+class Game {
+public:
+	Level level;
+	std::vector<std::shared_ptr<Solid>> solids;
+};
 
-}
+extern Game *gGame;
+
+} // namespace Plat
 
 #endif // PLAT_GLOBALS_H_
