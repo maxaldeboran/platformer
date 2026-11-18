@@ -3,14 +3,12 @@
 
 #include <raylib.h>
 
-constexpr float kEpsilon = 0.000001f;
-
 constexpr int Sign(int x) {
 	return (x > 0) - (x < 0);
 }
 
 constexpr int Sign(float x) {
-	float eps = kEpsilon;
+	const float eps = 0.000001f;
 	return (x >= eps) - (x <= -eps);
 }
 

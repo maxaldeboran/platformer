@@ -2,8 +2,6 @@
 
 namespace Plat {
 
-std::vector<Solid> solids;
-std::vector<Actor> actors;
-Actor *player;
+Game *gGame;
 
 } // namespace Plat
