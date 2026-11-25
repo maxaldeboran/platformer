@@ -22,7 +22,7 @@ bool Actor::IsRiding(const Solid &solid)
 /* default virtual method impl */
 void Actor::Squish(void)
 {
-	TraceLog(LOG_INFO, "Squish!");
+	DeleteSelf();
 }
 
 bool Actor::CollideAt(const std::list<std::shared_ptr<Solid>> &solids, IVector2 position)

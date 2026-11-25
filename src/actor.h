@@ -19,6 +19,8 @@ public:
 	constexpr int loY(void);
 	constexpr int hiX(void);
 	constexpr int hiY(void);
+	constexpr bool ShouldDelete(void); /* tells the game loop to delete the object */
+	constexpr void DeleteSelf(void); /* sets the object up for deletion */
 
 	bool MoveX(float amount); /* returns true if a solid was hit */
 	bool MoveY(float amount); /* returns true if a solid was hit */
@@ -29,8 +31,19 @@ public:
 	virtual bool IsRiding(const Solid &solid);
 	virtual void Squish(void);
 private:
+	bool shouldDelete = false;
 	float xRemainder = 0.0f, yRemainder = 0.0f;
 };
+
+constexpr bool Actor::ShouldDelete(void)
+{
+	return shouldDelete;
+}
+
+constexpr void Actor::DeleteSelf(void)
+{
+	shouldDelete = true;
+}
 
 constexpr Aabb Actor::GetHitboxTranslated(void)
 {
