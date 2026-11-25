@@ -7,12 +7,7 @@ void Level::Update(float dt) {
 		actor->Update(dt);
 	}
 
-	for (auto it = actors.begin(); it != actors.end(); it++) {
-		auto &actor = *it;
-		if (actor->ShouldDelete()) {
-			actors.erase(it);
-		}
-	}
+	actors.remove_if([](std::shared_ptr<Actor> &a){ return a->ShouldDelete(); });
 }
 
 } // namespace Plat

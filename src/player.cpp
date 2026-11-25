@@ -16,6 +16,10 @@ Player::Player(void) {
 }
 
 void Player::Update(float dt) {
+	if (IsKeyPressed(KEY_G)) {
+		DeleteSelf();
+	}
+
 	constexpr float walkSpeed = 256.0f;
 
 	int dirX = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);

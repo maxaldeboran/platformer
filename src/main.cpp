@@ -76,7 +76,7 @@ int main(void)
 
 	Plat::Player player{};
 	player.position = {100, 100};
-	Plat::gGame->level.actors.push_back(std::make_shared<Plat::Player>(player));
+	Plat::gGame->level.actors.push_back(std::make_shared<Plat::Player>(Plat::Player(player)));
 
 	for (size_t i = 0; i < sizeof(gBlockPositions) / sizeof(*gBlockPositions); i++) {
 		Plat::Solid solid{};

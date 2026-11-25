@@ -1,6 +1,6 @@
 CXX=g++
 RAYLIB_SRC=raylib/src
-CXXFLAGS=-std=c++23 -Wall -Wextra -pedantic-errors -I$(RAYLIB_SRC) -ggdb -fsanitize=address
+CXXFLAGS=-std=c++23 -Wall -Wextra -pedantic-errors -I$(RAYLIB_SRC) -ggdb
 LIBS=-lm -lX11
 
 OBJS=\
