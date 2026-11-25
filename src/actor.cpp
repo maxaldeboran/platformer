@@ -7,10 +7,9 @@
 namespace Plat {
 
 /* default virtual method impl */
-
-void Actor::Update(void)
+void Actor::Update(float dt)
 {
-	/* do nothing */
+	(void)dt;
 }
 
 /* default virtual method impl */

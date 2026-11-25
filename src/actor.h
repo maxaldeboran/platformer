@@ -20,11 +20,12 @@ public:
 	constexpr int hiX(void);
 	constexpr int hiY(void);
 
-	virtual void Update(void);
 	bool MoveX(float amount); /* returns true if a solid was hit */
 	bool MoveY(float amount); /* returns true if a solid was hit */
 	bool CollideAt(const std::vector<std::shared_ptr<Solid>> &solids, IVector2 position);
 	constexpr Aabb GetHitboxTranslated(void);
+
+	virtual void Update(float dt);
 	virtual bool IsRiding(const Solid &solid);
 	virtual void Squish(void);
 private:

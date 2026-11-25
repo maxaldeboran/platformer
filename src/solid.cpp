@@ -6,6 +6,11 @@
 
 namespace Plat {
 
+static bool OverlapCheck(Solid *solid, std::shared_ptr<Actor> &actor)
+{
+	return AabbsOverlap(solid->GetHitboxTranslated(), actor->GetHitboxTranslated());
+}
+
 void Solid::Move(float amountX, float amountY)
 {
 	xRemainder += amountX;
@@ -28,7 +33,7 @@ void Solid::Move(float amountX, float amountY)
 
 	if (moveX > 0) {
 		for (auto &actor : gGame->level.actors) {
-			if (AabbsOverlap(GetHitboxTranslated(), actor->GetHitboxTranslated())) {
+			if (OverlapCheck(this, actor)) {
 				bool hit = actor->MoveX(hiX() - actor->loX() + 1);
 				if (hit) actor->Squish();
 			} else if (actor->isRidingCurrent) {
@@ -37,7 +42,7 @@ void Solid::Move(float amountX, float amountY)
 		}
 	} else if (moveX < 0) {
 		for (auto &actor : gGame->level.actors) {
-			if (AabbsOverlap(GetHitboxTranslated(), actor->GetHitboxTranslated())) {
+			if (OverlapCheck(this, actor)) {
 				bool hit = actor->MoveX(loX() - actor->hiX() - 1);
 				if (hit) actor->Squish();
 			} else if (actor->isRidingCurrent) {
@@ -51,7 +56,7 @@ void Solid::Move(float amountX, float amountY)
 
 	if (moveY > 0) {
 		for (auto &actor : gGame->level.actors) {
-			if (AabbsOverlap(GetHitboxTranslated(), actor->GetHitboxTranslated())) {
+			if (OverlapCheck(this, actor)) {
 				bool hit = actor->MoveY(hiY() - actor->loY() + 1);
 				if (hit) actor->Squish();
 			} else if (actor->isRidingCurrent) {
@@ -60,7 +65,7 @@ void Solid::Move(float amountX, float amountY)
 		}
 	} else if (moveY < 0) {
 		for (auto &actor : gGame->level.actors) {
-			if (AabbsOverlap(GetHitboxTranslated(), actor->GetHitboxTranslated())) {
+			if (OverlapCheck(this, actor)) {
 				bool hit = actor->MoveY(loY() - actor->hiY() - 1);
 				if (hit) actor->Squish();
 			} else if (actor->isRidingCurrent) {

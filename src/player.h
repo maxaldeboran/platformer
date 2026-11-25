@@ -7,8 +7,13 @@ namespace Plat {
 
 class Player : public virtual Actor {
 public:
+	Vector2 velocity{0, 0};
+	bool isLanded = false;
+	bool isJumpControlled = false;
+
 	Player(void);
-	void Update(void) override;
+	void Update(float dt) override;
+	bool IsRiding(const Solid &solid) override;
 };
 
 } // namespace Plat

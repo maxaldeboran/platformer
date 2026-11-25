@@ -2,9 +2,9 @@
 
 namespace Plat {
 
-void Level::Update(void) {
+void Level::Update(float dt) {
 	for (auto &actor : actors) {
-		actor->Update();
+		actor->Update(dt);
 	}
 }
 

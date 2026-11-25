@@ -29,16 +29,16 @@ constexpr void operator+=(IVector2 &lhs, const IVector2 &rhs)
 
 struct Aabb {
 	IVector2 lo, hi;
-	constexpr Aabb Translated(const IVector2 &origin);
-	constexpr Rectangle AsRec(void);
+	constexpr Aabb Translated(const IVector2 &origin) const;
+	constexpr Rectangle AsRec(void) const;
 };
 
-constexpr Aabb Aabb::Translated(const IVector2 &origin)
+constexpr Aabb Aabb::Translated(const IVector2 &origin) const
 {
 	return Aabb{lo + origin, hi + origin};
 }
 
-constexpr Rectangle Aabb::AsRec(void)
+constexpr Rectangle Aabb::AsRec(void) const
 {
 	Rectangle result{};
 	result.x = lo.x;
