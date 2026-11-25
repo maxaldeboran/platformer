@@ -25,7 +25,7 @@ void Actor::Squish(void)
 	TraceLog(LOG_INFO, "Squish!");
 }
 
-bool Actor::CollideAt(const std::vector<std::shared_ptr<Solid>> &solids, IVector2 position)
+bool Actor::CollideAt(const std::list<std::shared_ptr<Solid>> &solids, IVector2 position)
 {
 	Aabb box = hitbox.Translated(position);
 

@@ -3,13 +3,14 @@
 
 #include <raylib.h>
 
+constexpr float EPSILON = 0.000001f;
+
 constexpr int Sign(int x) {
 	return (x > 0) - (x < 0);
 }
 
 constexpr int Sign(float x) {
-	const float eps = 0.000001f;
-	return (x >= eps) - (x <= -eps);
+	return (x >= EPSILON) - (x <= -EPSILON);
 }
 
 struct IVector2 {

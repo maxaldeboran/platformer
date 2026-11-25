@@ -2,7 +2,7 @@
 #define PLAT_ACTOR_H_
 
 #include <memory>
-#include <vector>
+#include <list>
 
 #include "solid.h"
 #include "util.h"
@@ -22,7 +22,7 @@ public:
 
 	bool MoveX(float amount); /* returns true if a solid was hit */
 	bool MoveY(float amount); /* returns true if a solid was hit */
-	bool CollideAt(const std::vector<std::shared_ptr<Solid>> &solids, IVector2 position);
+	bool CollideAt(const std::list<std::shared_ptr<Solid>> &solids, IVector2 position);
 	constexpr Aabb GetHitboxTranslated(void);
 
 	virtual void Update(float dt);

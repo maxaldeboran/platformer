@@ -12,7 +12,7 @@ namespace Plat {
 class Game {
 public:
 	Level level;
-	std::vector<std::shared_ptr<Solid>> solids;
+	std::list<std::shared_ptr<Solid>> solids;
 };
 
 extern Game *gGame;

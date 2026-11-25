@@ -1,5 +1,7 @@
 #include "player.h"
 
+#include <math.h>
+
 #include <raylib.h>
 
 #include "globals.h"
@@ -14,10 +16,38 @@ Player::Player(void) {
 }
 
 void Player::Update(float dt) {
-	int dirX = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
-	MoveX(dirX * 256.0f * dt); 
+	constexpr float walkSpeed = 256.0f;
 
-	int maxYVel = 288.0f;
+	int dirX = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
+
+	/* smooth acceleration */
+	if (dirX != 0) {
+		/* accelerate to walking speed in 4 frames */
+		constexpr float accel = walkSpeed / (4.0f / 60);
+		velocity.x += dirX * accel * dt;
+	} else if (fabsf(velocity.x) > EPSILON) {
+		/* deccelerat in 2 frames */
+		constexpr float accel = walkSpeed / (2.0f / 60);
+		int sign = Sign(velocity.x);
+		velocity.x -= sign * accel * dt;
+		if (sign * velocity.x <= sign * -EPSILON) {
+			velocity.x = 0.0f;
+		}
+	}
+
+	if (velocity.x > walkSpeed) {
+		velocity.x = walkSpeed;
+	} else if (velocity.x < -walkSpeed) {
+		velocity.x = -walkSpeed;
+	}
+
+
+	int hitX = MoveX(velocity.x * dt); 
+	if (hitX) {
+		velocity.x = 0.0f;
+	}
+
+	float maxYVel = 288.0f;
 	velocity.y += gGame->level.gravity.y * dt;
 	if (velocity.y > maxYVel) {
 		velocity.y = maxYVel;
@@ -42,13 +72,9 @@ void Player::Update(float dt) {
 	}
 
 	bool hitY = MoveY(velocity.y * dt); 
+	(void)hitY;
 
 	isLanded = (velocity.y >= 0.0f && CollideAt(gGame->solids, position + IVector2{0, 1}));
-
-	TraceLog(LOG_DEBUG, TextFormat("Landed: %i", (int)isLanded));
-	TraceLog(LOG_DEBUG, TextFormat("Y velocity: %f", velocity.y));
-	TraceLog(LOG_DEBUG, TextFormat("Y hit: %i", (int)hitY));
-	TraceLog(LOG_DEBUG, TextFormat("Controlled jump: %i", (int)isJumpControlled));
 }
 
 bool Player::IsRiding(const Solid &solid)

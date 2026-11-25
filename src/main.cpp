@@ -63,6 +63,8 @@ static const IVector2 gBlockPositions[] = {
 
 int main(void)
 {
+	SetTraceLogLevel(LOG_DEBUG);
+
 	InitWindow(512, 288, "Hello World");
 	if (!IsWindowReady()) {
 		TraceLog(LOG_FATAL, "Failed to initialize the window");
