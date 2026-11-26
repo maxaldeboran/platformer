@@ -5,6 +5,7 @@ LIBS=-lm -lX11
 
 OBJS=\
      obj/globals.o \
+     obj/resman.o \
      obj/actor.o \
      obj/solid.o \
      obj/level.o \

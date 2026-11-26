@@ -85,11 +85,21 @@ int main(void)
 		Plat::gGame->solids.push_back(std::make_shared<Plat::Solid>(solid));
 	}
 
+	Texture bg0 = Plat::gGame->resman.GetTexture("backgrounds/level1-0");
+	Texture bg1 = Plat::gGame->resman.GetTexture("backgrounds/level1-1");
+	Texture bg2 = Plat::gGame->resman.GetTexture("backgrounds/level1-2");
+	Texture bg3 = Plat::gGame->resman.GetTexture("backgrounds/level1-3");
+
 	while (!WindowShouldClose()) {
 		Plat::gGame->level.Update(GetFrameTime());
 
 		BeginDrawing();
 		ClearBackground(WHITE);
+
+		DrawTexture(bg0, 0, 0, WHITE);
+		DrawTexture(bg1, 0, 0, WHITE);
+		DrawTexture(bg2, 0, 0, WHITE);
+		DrawTexture(bg3, 0, 0, WHITE);
 
 		for (auto &actor : Plat::gGame->level.actors) {
 			Rectangle rec = actor->GetHitboxTranslated().AsRec();
@@ -99,6 +109,8 @@ int main(void)
 			Rectangle rec = solid->GetHitboxTranslated().AsRec();
 			DrawRectangleLinesEx(rec, 1.0f, BLUE);
 		}
+
+		DrawText(TextFormat("%i", GetFPS()), 10, 10, 20, BLACK);
 		EndDrawing();
 	}
 

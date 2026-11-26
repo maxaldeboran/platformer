@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "resman.h"
 #include "solid.h"
 #include "level.h"
 
@@ -11,6 +12,7 @@ namespace Plat {
 
 class Game {
 public:
+	ResMan resman;
 	Level level;
 	std::list<std::shared_ptr<Solid>> solids;
 };

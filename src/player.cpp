@@ -10,7 +10,7 @@ namespace Plat {
 
 Player::Player(void) {
 	TraceLog(LOG_INFO, "player constructor");
-	hitbox.hi = IVector2{23, 23};
+	hitbox = Aabb{.lo = {-12, -23}, .hi = {11, 0}};
 
 	isLanded = (velocity.y >= 0.0f && CollideAt(gGame->solids, position + IVector2{0, 1}));
 }
