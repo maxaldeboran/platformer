@@ -13,7 +13,14 @@ public:
 
 	Player(void);
 	void Update(float dt) override;
+	void Draw(void) override;
 	bool IsRiding(const Solid &solid) override;
+private:
+	Texture walkTexture{};
+	Texture idleTexture{};
+	float animationTime = 0.0f;
+	bool isSpriteFlipX = false;
+	bool isWalking = false;
 };
 
 } // namespace Plat

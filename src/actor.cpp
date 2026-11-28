@@ -13,6 +13,12 @@ void Actor::Update(float dt)
 }
 
 /* default virtual method impl */
+void Actor::Draw(void)
+{
+	/* do nothing */
+}
+
+/* default virtual method impl */
 bool Actor::IsRiding(const Solid &solid)
 {
 	(void)solid;
@@ -48,7 +54,7 @@ bool Actor::MoveX(float amount)
 	int sign = Sign(move);
 	xRemainder -= move;
 	while (move != 0) {
-		if (!CollideAt(gGame->solids, position + IVector2{sign, 0})) {
+		if (!CollideAt(gGame->level.solids, position + IVector2{sign, 0})) {
 			move -= sign;
 			position.x += sign;
 		} else {
@@ -67,7 +73,7 @@ bool Actor::MoveY(float amount)
 	int sign = Sign(move);
 	yRemainder -= move;
 	while (move != 0) {
-		if (!CollideAt(gGame->solids, position + IVector2{0, sign})) {
+		if (!CollideAt(gGame->level.solids, position + IVector2{0, sign})) {
 			move -= sign;
 			position.y += sign;
 		} else {

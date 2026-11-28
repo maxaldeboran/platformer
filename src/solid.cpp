@@ -6,6 +6,12 @@
 
 namespace Plat {
 
+/* default virtual method impl */
+void Solid::Update(float dt)
+{
+	(void)dt;
+}
+
 static bool OverlapCheck(Solid *solid, std::shared_ptr<Actor> &actor)
 {
 	return AabbsOverlap(solid->GetHitboxTranslated(), actor->GetHitboxTranslated());

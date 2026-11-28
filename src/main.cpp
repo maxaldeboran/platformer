@@ -82,7 +82,7 @@ int main(void)
 		Plat::Solid solid{};
 		solid.position = gBlockPositions[i];
 		solid.hitbox.hi = {31, 31};
-		Plat::gGame->solids.push_back(std::make_shared<Plat::Solid>(solid));
+		Plat::gGame->level.solids.push_back(std::make_shared<Plat::Solid>(solid));
 	}
 
 	Texture bg0 = Plat::gGame->resman.GetTexture("backgrounds/level1-0");
@@ -102,10 +102,14 @@ int main(void)
 		DrawTexture(bg3, 0, 0, WHITE);
 
 		for (auto &actor : Plat::gGame->level.actors) {
+			actor->Draw();
+		}
+
+		for (auto &actor : Plat::gGame->level.actors) {
 			Rectangle rec = actor->GetHitboxTranslated().AsRec();
 			DrawRectangleLinesEx(rec, 1.0f, RED);
 		}
-		for (auto &solid : Plat::gGame->solids) {
+		for (auto &solid : Plat::gGame->level.solids) {
 			Rectangle rec = solid->GetHitboxTranslated().AsRec();
 			DrawRectangleLinesEx(rec, 1.0f, BLUE);
 		}

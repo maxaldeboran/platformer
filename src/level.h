@@ -12,6 +12,8 @@ namespace Plat {
 class Level {
 public:
 	std::list<std::shared_ptr<Actor>> actors;
+	std::list<std::shared_ptr<Solid>> solids;
+
 	Vector2 gravity{0, 288*5}; /* reference constant acceleration */
 	Vector2 wind{0, 0}; /* reference constant velocity */
 

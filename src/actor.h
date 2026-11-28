@@ -28,6 +28,7 @@ public:
 	constexpr Aabb GetHitboxTranslated(void);
 
 	virtual void Update(float dt);
+	virtual void Draw(void);
 	virtual bool IsRiding(const Solid &solid);
 	virtual void Squish(void);
 private:

@@ -14,7 +14,6 @@ class Game {
 public:
 	ResMan resman;
 	Level level;
-	std::list<std::shared_ptr<Solid>> solids;
 };
 
 extern Game *gGame;
